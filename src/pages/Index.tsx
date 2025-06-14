@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,9 +22,9 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 relative overflow-hidden">
+    <div className="min-h-screen bg-white">
       {/* Navigation Header */}
-      <nav className="relative z-20 bg-white border-b border-gray-200 shadow-sm">
+      <nav className="bg-white border-b border-gray-100 shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -89,7 +88,7 @@ const Index = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-6 py-16">
+      <div className="container mx-auto px-6 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <div className="flex justify-center items-center gap-6 mb-8">
@@ -104,9 +103,9 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Multilingual Tagline */}
-          <div className="bg-white rounded-full px-8 py-4 inline-block mb-8 shadow-md border border-gray-100">
-            <p className="text-gray-700 text-xl font-medium">
+          {/* Multilingual Tagline with Green Background */}
+          <div className="bg-[#2ECC71] rounded-full px-8 py-4 inline-block mb-8 shadow-md">
+            <p className="text-white text-xl font-medium">
               ನಮ್ಮ ನಗರವನ್ನು ಶುಚಿಯಾಗಿ ಇಡುವುದು • Smart City Cleanliness • स्मार्ट स्वच्छता सेवा
             </p>
           </div>
