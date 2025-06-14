@@ -1,14 +1,16 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Phone, AlertCircle, Trophy, Home as HomeIcon, MapPin, Upload, CreditCard, Calendar, Star, Wallet, CheckCircle, Clock, FileText, Camera, Gift, Download, Bell, Settings, Receipt, TreePine, Users, Award, Target } from "lucide-react";
+import { ArrowLeft, Phone, AlertCircle, Trophy, Home as HomeIcon, MapPin, Upload, CreditCard, Calendar, Star, Wallet, CheckCircle, Clock, FileText, Camera, Gift, Download, Bell, Settings, Receipt, TreePine, Users, Award, Target, MessageSquare, HelpCircle, PhoneCall } from "lucide-react";
 import PaymentModal from "@/components/PaymentModal";
 import BillGeneration from "@/components/BillGeneration";
 import ContributionTracker from "@/components/ContributionTracker";
 import EnhancedComplaintSystem from "@/components/EnhancedComplaintSystem";
+import QuickActions from "@/components/QuickActions";
 import { useToast } from "@/hooks/use-toast";
 
 interface CitizenPortalProps {
@@ -50,15 +52,15 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
   };
 
   const renderNavbar = () => (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 z-20 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 z-20 shadow-2xl">
       <div className="flex justify-around">
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setCurrentPage("home")}
-          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "home" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+          className={`flex flex-col items-center gap-1 transition-all duration-300 ${currentPage === "home" ? "text-blue-600 bg-blue-50 scale-105" : "text-gray-600 hover:text-blue-500"}`}
         >
-          <HomeIcon className="h-4 w-4" />
+          <HomeIcon className="h-5 w-5" />
           <span className="text-xs font-medium">{isKannada ? "ಮನೆ" : "Home"}</span>
         </Button>
         
@@ -66,9 +68,9 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           variant="ghost"
           size="sm"
           onClick={() => setCurrentPage("payments")}
-          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "payments" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+          className={`flex flex-col items-center gap-1 transition-all duration-300 ${currentPage === "payments" ? "text-blue-600 bg-blue-50 scale-105" : "text-gray-600 hover:text-blue-500"}`}
         >
-          <CreditCard className="h-4 w-4" />
+          <CreditCard className="h-5 w-5" />
           <span className="text-xs font-medium">{isKannada ? "ಪಾವತಿ" : "Pay"}</span>
         </Button>
 
@@ -76,9 +78,9 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           variant="ghost"
           size="sm"
           onClick={() => setCurrentPage("bills")}
-          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "bills" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+          className={`flex flex-col items-center gap-1 transition-all duration-300 ${currentPage === "bills" ? "text-blue-600 bg-blue-50 scale-105" : "text-gray-600 hover:text-blue-500"}`}
         >
-          <Receipt className="h-4 w-4" />
+          <Receipt className="h-5 w-5" />
           <span className="text-xs font-medium">{isKannada ? "ಬಿಲ್‌ಗಳು" : "Bills"}</span>
         </Button>
         
@@ -86,9 +88,9 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           variant="ghost"
           size="sm"
           onClick={() => setCurrentPage("status")}
-          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "status" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+          className={`flex flex-col items-center gap-1 transition-all duration-300 ${currentPage === "status" ? "text-blue-600 bg-blue-50 scale-105" : "text-gray-600 hover:text-blue-500"}`}
         >
-          <MapPin className="h-4 w-4" />
+          <MapPin className="h-5 w-5" />
           <span className="text-xs font-medium">{isKannada ? "ಸ್ಥಿತಿ" : "Status"}</span>
         </Button>
         
@@ -96,9 +98,9 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           variant="ghost"
           size="sm"
           onClick={() => setCurrentPage("report")}
-          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "report" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+          className={`flex flex-col items-center gap-1 transition-all duration-300 ${currentPage === "report" ? "text-blue-600 bg-blue-50 scale-105" : "text-gray-600 hover:text-blue-500"}`}
         >
-          <AlertCircle className="h-4 w-4" />
+          <AlertCircle className="h-5 w-5" />
           <span className="text-xs font-medium">{isKannada ? "ದೂರು" : "Report"}</span>
         </Button>
 
@@ -106,9 +108,9 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           variant="ghost"
           size="sm"
           onClick={() => setCurrentPage("contributions")}
-          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "contributions" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+          className={`flex flex-col items-center gap-1 transition-all duration-300 ${currentPage === "contributions" ? "text-blue-600 bg-blue-50 scale-105" : "text-gray-600 hover:text-blue-500"}`}
         >
-          <TreePine className="h-4 w-4" />
+          <TreePine className="h-5 w-5" />
           <span className="text-xs font-medium">{isKannada ? "ಪ್ರಭಾವ" : "Impact"}</span>
         </Button>
         
@@ -116,9 +118,9 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           variant="ghost"
           size="sm"
           onClick={() => setCurrentPage("rewards")}
-          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "rewards" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+          className={`flex flex-col items-center gap-1 transition-all duration-300 ${currentPage === "rewards" ? "text-blue-600 bg-blue-50 scale-105" : "text-gray-600 hover:text-blue-500"}`}
         >
-          <Trophy className="h-4 w-4" />
+          <Trophy className="h-5 w-5" />
           <span className="text-xs font-medium">{isKannada ? "ಬಹುಮಾನ" : "Rewards"}</span>
         </Button>
       </div>
@@ -129,67 +131,71 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
     <div className="pb-20">
       {/* Hero Section */}
       <div className="text-center mb-8">
-        <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-          <div className="text-4xl">🏠</div>
+        <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+          <div className="text-5xl">🏠</div>
         </div>
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           {isKannada ? "ಸ್ವಾಗತ!" : "Welcome!"}
         </h1>
-        <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-full px-6 py-3 inline-flex items-center gap-3 mb-6 shadow-md">
-          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-green-700 font-semibold">
+        <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-full px-8 py-4 inline-flex items-center gap-3 mb-8 shadow-lg border border-green-200">
+          <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-green-700 font-semibold text-lg">
             {isKannada ? "ಇಂದು ಸಂಗ್ರಹಣೆ ಪೂರ್ಣಗೊಂಡಿದೆ" : "Today's Collection Completed"}
           </span>
         </div>
       </div>
 
+      {/* Quick Actions Section */}
+      <QuickActions isKannada={isKannada} />
+
       {/* Quick Stats Dashboard */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-lg transition-all duration-300">
-          <CardContent className="p-4 text-center">
-            <TreePine className="h-6 w-6 text-green-600 mx-auto mb-2" />
-            <div className="text-lg font-bold text-green-700">2.3</div>
-            <div className="text-xs text-gray-600">{isKannada ? "ಮರಗಳು ಉಳಿಸಿದೆ" : "Trees Saved"}</div>
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <CardContent className="p-6 text-center">
+            <TreePine className="h-8 w-8 text-green-600 mx-auto mb-3" />
+            <div className="text-2xl font-bold text-green-700">2.3</div>
+            <div className="text-sm text-gray-600 font-medium">{isKannada ? "ಮರಗಳು ಉಳಿಸಿದೆ" : "Trees Saved"}</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-50 to-sky-50 border-blue-200 hover:shadow-lg transition-all duration-300">
-          <CardContent className="p-4 text-center">
-            <Award className="h-6 w-6 text-blue-600 mx-auto mb-2" />
-            <div className="text-lg font-bold text-blue-700">450</div>
-            <div className="text-xs text-gray-600">{isKannada ? "ಪಾಯಿಂಟ್‌ಗಳು" : "Points"}</div>
+        <Card className="bg-gradient-to-br from-blue-50 to-sky-50 border-blue-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <CardContent className="p-6 text-center">
+            <Award className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+            <div className="text-2xl font-bold text-blue-700">450</div>
+            <div className="text-sm text-gray-600 font-medium">{isKannada ? "ಪಾಯಿಂಟ್‌ಗಳು" : "Points"}</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200 hover:shadow-lg transition-all duration-300">
-          <CardContent className="p-4 text-center">
-            <Target className="h-6 w-6 text-purple-600 mx-auto mb-2" />
-            <div className="text-lg font-bold text-purple-700">#12</div>
-            <div className="text-xs text-gray-600">{isKannada ? "ಕಮ್ಯುನಿಟಿ ರ್ಯಾಂಕ್" : "Community Rank"}</div>
+        <Card className="bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <CardContent className="p-6 text-center">
+            <Target className="h-8 w-8 text-purple-600 mx-auto mb-3" />
+            <div className="text-2xl font-bold text-purple-700">#12</div>
+            <div className="text-sm text-gray-600 font-medium">{isKannada ? "ಕಮ್ಯುನಿಟಿ ರ್ಯಾಂಕ್" : "Community Rank"}</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Enhanced Quick Actions */}
-      <div className="grid gap-4 mb-8">
-        <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-green-50 to-emerald-50">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center shadow-md">
-                <CreditCard className="h-7 w-7 text-green-600" />
+      <div className="grid gap-6 mb-8">
+        <Card className="border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center shadow-lg">
+                <CreditCard className="h-8 w-8 text-green-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
                   {isKannada ? "ತ್ವರಿತ ಪಾವತಿ" : "Quick Payment"}
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-base mb-2">
                   {isKannada ? "ಬಿಲ್ ಪಾವತಿ ಮತ್ತು ಇತಿಹಾಸ" : "Bill payment & history"}
                 </p>
-                <Badge className="bg-orange-100 text-orange-700 text-xs mt-1">₹150 {isKannada ? "ಬಾಕಿ" : "Due"}</Badge>
+                <Badge className="bg-orange-100 text-orange-700 font-semibold">₹150 {isKannada ? "ಬಾಕಿ" : "Due"}</Badge>
               </div>
               <Button
                 onClick={() => setShowPaymentModal(true)}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg"
+                size="lg"
+                className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-xl px-8 py-3 text-lg font-semibold"
               >
                 {isKannada ? "ಪಾವತಿಸಿ" : "Pay Now"}
               </Button>
@@ -197,44 +203,49 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-blue-50 to-sky-50">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center shadow-md">
-                <Phone className="h-7 w-7 text-blue-600" />
+        <Card className="border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-blue-50 to-sky-50 border-blue-200">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center shadow-lg">
+                <Phone className="h-8 w-8 text-blue-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
                   {isKannada ? "ವಿಶೇಷ ಸೇವೆಗಳು" : "Special Services"}
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-base">
                   {isKannada ? "ಹೆಚ್ಚುವರಿ ಪಿಕಪ್ & ವಿಶೇಷ ಸೇವೆ" : "Extra pickup & special service"}
                 </p>
               </div>
-              <Button onClick={handleSpecialPickup} className="bg-gradient-to-r from-blue-500 to-sky-600 hover:from-blue-600 hover:to-sky-700 text-white shadow-lg">
+              <Button 
+                onClick={handleSpecialPickup} 
+                size="lg"
+                className="bg-gradient-to-r from-blue-500 to-sky-600 hover:from-blue-600 hover:to-sky-700 text-white shadow-xl px-8 py-3 text-lg font-semibold"
+              >
                 {isKannada ? "ವಿನಂತಿಸಿ" : "Request"}
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-red-50 to-pink-50">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center shadow-md">
-                <AlertCircle className="h-7 w-7 text-red-600" />
+        <Card className="border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-red-50 to-pink-50 border-red-200">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center shadow-lg">
+                <AlertCircle className="h-8 w-8 text-red-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
                   {isKannada ? "ದೂರು ವ್ಯವಸ್ಥೆ" : "Complaint System"}
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-base">
                   {isKannada ? "ಸಮಸ್ಯೆಗಳನ್ನು ವರದಿ ಮಾಡಿ & ಟ್ರ್ಯಾಕ್ ಮಾಡಿ" : "Report & track issues"}
                 </p>
               </div>
               <Button 
                 onClick={() => setCurrentPage("report")} 
-                className="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white shadow-lg"
+                size="lg"
+                className="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white shadow-xl px-8 py-3 text-lg font-semibold"
               >
                 {isKannada ? "ದೂರು" : "Report"}
               </Button>
@@ -242,23 +253,24 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-purple-50 to-indigo-50">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center shadow-md">
-                <TreePine className="h-7 w-7 text-purple-600" />
+        <Card className="border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center shadow-lg">
+                <TreePine className="h-8 w-8 text-purple-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
                   {isKannada ? "ಪರಿಸರ ಪ್ರಭಾವ" : "Environmental Impact"}
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-base">
                   {isKannada ? "ನಿಮ್ಮ ಕೊಡುಗೆ ಮತ್ತು ಸಾಧನೆಗಳು" : "Your contributions & achievements"}
                 </p>
               </div>
               <Button 
                 onClick={() => setCurrentPage("contributions")} 
-                className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white shadow-lg"
+                size="lg"
+                className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white shadow-xl px-8 py-3 text-lg font-semibold"
               >
                 {isKannada ? "ವೀಕ್ಷಿಸಿ" : "View"}
               </Button>
@@ -268,24 +280,24 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
       </div>
 
       {/* Today's Summary */}
-      <Card className="border border-gray-200 mb-8 bg-gradient-to-r from-gray-50 to-slate-50">
+      <Card className="border border-gray-200 mb-8 bg-gradient-to-r from-gray-50 to-slate-50 border-gray-300 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-gray-800 flex items-center gap-2">
-            <FileText className="h-5 w-5" />
+          <CardTitle className="text-gray-800 flex items-center gap-3 text-xl">
+            <FileText className="h-6 w-6" />
             {isKannada ? "ಇಂದಿನ ಸಾರಾಂಶ" : "Today's Summary"}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-6">
-            <div className="text-center p-4 bg-white rounded-xl shadow-sm border border-green-100">
-              <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-2" />
-              <div className="text-lg font-bold text-gray-800">{isKannada ? "ಸಂಗ್ರಹಿಸಲಾಗಿದೆ" : "Collected"}</div>
-              <div className="text-gray-600 text-sm">8:30 AM</div>
+          <div className="grid grid-cols-2 gap-8">
+            <div className="text-center p-6 bg-white rounded-2xl shadow-md border border-green-100">
+              <CheckCircle className="h-10 w-10 text-green-500 mx-auto mb-3" />
+              <div className="text-xl font-bold text-gray-800">{isKannada ? "ಸಂಗ್ರಹಿಸಲಾಗಿದೆ" : "Collected"}</div>
+              <div className="text-gray-600 font-medium">8:30 AM</div>
             </div>
-            <div className="text-center p-4 bg-white rounded-xl shadow-sm border border-blue-100">
-              <Wallet className="h-8 w-8 text-blue-500 mx-auto mb-2" />
-              <div className="text-lg font-bold text-gray-800">₹150</div>
-              <div className="text-gray-600 text-sm">{isKannada ? "ಬಾಕಿ: 5 ದಿನಗಳು" : "Due: 5 days"}</div>
+            <div className="text-center p-6 bg-white rounded-2xl shadow-md border border-blue-100">
+              <Wallet className="h-10 w-10 text-blue-500 mx-auto mb-3" />
+              <div className="text-xl font-bold text-gray-800">₹150</div>
+              <div className="text-gray-600 font-medium">{isKannada ? "ಬಾಕಿ: 5 ದಿನಗಳು" : "Due: 5 days"}</div>
             </div>
           </div>
         </CardContent>
@@ -305,7 +317,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
       </div>
 
       {/* Current Bill */}
-      <Card className="border border-gray-200 mb-6">
+      <Card className="border border-gray-200 mb-6 shadow-lg">
         <CardHeader>
           <CardTitle className="text-gray-800 flex items-center justify-between">
             <span className="flex items-center gap-2">
@@ -340,7 +352,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
       </Card>
 
       {/* Payment History */}
-      <Card className="border border-gray-200">
+      <Card className="border border-gray-200 shadow-lg">
         <CardHeader>
           <CardTitle className="text-gray-800 flex items-center gap-2">
             <Wallet className="h-5 w-5" />
@@ -385,7 +397,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
       </div>
 
       {/* Points Balance */}
-      <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200 mb-6">
+      <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200 mb-6 shadow-lg">
         <CardContent className="p-6 text-center">
           <div className="text-5xl font-bold text-yellow-600 mb-2">450</div>
           <p className="text-gray-700 text-lg">{isKannada ? "ಗಳಿಸಿದ ಪಾಯಿಂಟ್‌ಗಳು" : "Earned Points"}</p>
@@ -403,7 +415,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           { icon: "🌱", title: isKannada ? "ಸಸ್ಯ ಕಿಟ್" : "Plant Kit", points: 200, available: true },
           { icon: "🏆", title: isKannada ? "ಪ್ರೀಮಿಯಂ ಸೇವೆ" : "Premium Service", points: 1000, available: false },
         ].map((reward, index) => (
-          <Card key={index} className={`border border-gray-200 ${!reward.available ? 'opacity-50' : 'hover:shadow-lg hover:scale-[1.02]'} transition-all duration-300`}>
+          <Card key={index} className={`border border-gray-200 ${!reward.available ? 'opacity-50' : 'hover:shadow-lg hover:scale-[1.02]'} transition-all duration-300 shadow-md`}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -438,7 +450,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
       </h2>
       
       {/* Collection Timeline */}
-      <Card className="border border-gray-200 mb-6">
+      <Card className="border border-gray-200 mb-6 shadow-lg">
         <CardHeader>
           <CardTitle className="text-gray-800 flex items-center gap-2">
             <Clock className="h-5 w-5" />
@@ -470,7 +482,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
       </Card>
 
       {/* Collection History */}
-      <Card className="border border-gray-200">
+      <Card className="border border-gray-200 shadow-lg">
         <CardHeader>
           <CardTitle className="text-gray-800 flex items-center gap-2">
             <FileText className="h-5 w-5" />
@@ -503,14 +515,14 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="p-4 pb-24">
+      <div className="p-6 pb-24">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <Button
             onClick={onBack}
             variant="ghost"
             size="sm"
-            className="text-gray-600 hover:bg-gray-100"
+            className="text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             {isKannada ? "ಹಿಂದೆ" : "Back"}
@@ -520,7 +532,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
             onClick={toggleLanguage}
             variant="outline"
             size="sm"
-            className="border-gray-300 text-gray-600 hover:bg-gray-100"
+            className="border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors"
           >
             {isKannada ? "English" : "ಕನ್ನಡ"}
           </Button>
@@ -536,7 +548,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
         {currentPage === "report" && <EnhancedComplaintSystem isKannada={isKannada} />}
 
         {/* Language info */}
-        <div className="text-center text-gray-500 text-sm mb-4">
+        <div className="text-center text-gray-500 text-sm mb-4 font-medium">
           ನಮ್ಮ ನಗರವನ್ನು ಶುಚಿಯಾಗಿ ಇಡುವುದು • Smart City Initiative • स्मार्ट शहर पहल
         </div>
       </div>
