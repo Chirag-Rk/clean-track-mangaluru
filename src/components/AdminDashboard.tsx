@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
+import WardManagement from "./WardManagement";
+import ReportsAnalytics from "./ReportsAnalytics";
 import { 
   ArrowLeft, 
   Users, 
@@ -798,30 +800,8 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
           {currentSection === "dashboard" && renderDashboard()}
           {currentSection === "workers" && renderWorkersSection()}
           {currentSection === "complaints" && renderComplaintsSection()}
-          {currentSection === "wards" && (
-            <div className="text-center py-20">
-              <div className="text-8xl mb-6">🏘️</div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Ward Management</h2>
-              <p className="text-gray-600 mb-8">Manage ward boundaries and assignments</p>
-              <Card className="max-w-md mx-auto bg-white/80 backdrop-blur-sm">
-                <CardContent className="p-6">
-                  <p className="text-gray-500">Ward boundaries, zone assignments, and coverage maps would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-          {currentSection === "reports" && (
-            <div className="text-center py-20">
-              <div className="text-8xl mb-6">📊</div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Reports & Analytics</h2>
-              <p className="text-gray-600 mb-8">Comprehensive analytics and reporting</p>
-              <Card className="max-w-md mx-auto bg-white/80 backdrop-blur-sm">
-                <CardContent className="p-6">
-                  <p className="text-gray-500">Detailed charts, graphs, and exportable reports for data-driven decisions.</p>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {currentSection === "wards" && <WardManagement />}
+          {currentSection === "reports" && <ReportsAnalytics />}
         </div>
       </div>
 
