@@ -1,13 +1,17 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import WorkerApp from "@/components/WorkerApp";
 import CitizenPortal from "@/components/CitizenPortal";
 import AdminDashboard from "@/components/AdminDashboard";
-import { Heart, Home, Users, Shield, Phone, HelpCircle, LogIn, Sun, Truck, MapPin, Award, Bell, Search, User } from "lucide-react";
+import { Heart, Home, Users, Shield, Phone, HelpCircle, LogIn, Sun, Truck, MapPin, Award, Bell, Search, User, Globe } from "lucide-react";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState<"home" | "worker" | "citizen" | "admin">("home");
+  const [isKannada, setIsKannada] = useState(false);
+
+  const toggleLanguage = () => setIsKannada(!isKannada);
 
   if (currentView === "worker") {
     return <WorkerApp onBack={() => setCurrentView("home")} />;
@@ -41,27 +45,27 @@ const Index = () => {
             <div className="hidden md:flex items-center gap-6">
               <Button variant="ghost" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 gap-2 font-medium">
                 <Home className="h-4 w-4" />
-                Home
+                {isKannada ? "ಮನೆ" : "Home"}
               </Button>
               <Button variant="ghost" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 gap-2 font-medium">
                 <Truck className="h-4 w-4" />
-                Services
+                {isKannada ? "ಸೇವೆಗಳು" : "Services"}
               </Button>
               <Button variant="ghost" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 gap-2 font-medium">
                 <MapPin className="h-4 w-4" />
-                Tracking
+                {isKannada ? "ಟ್ರ್ಯಾಕಿಂಗ್" : "Tracking"}
               </Button>
               <Button variant="ghost" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 gap-2 font-medium">
                 <Users className="h-4 w-4" />
-                Workers
+                {isKannada ? "ಕೆಲಸಗಾರರು" : "Workers"}
               </Button>
               <Button variant="ghost" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 gap-2 font-medium">
                 <Sun className="h-4 w-4" />
-                Audio Tips
+                {isKannada ? "ಆಡಿಯೋ ಸಲಹೆಗಳು" : "Audio Tips"}
               </Button>
               <Button variant="ghost" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 gap-2 font-medium">
                 <HelpCircle className="h-4 w-4" />
-                Help
+                {isKannada ? "ಸಹಾಯ" : "Help"}
               </Button>
             </div>
 
@@ -76,11 +80,20 @@ const Index = () => {
               </Button>
               <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50">
                 <Phone className="h-4 w-4 mr-2" />
-                Emergency: 102
+                {isKannada ? "ತುರ್ತು: 102" : "Emergency: 102"}
+              </Button>
+              <Button 
+                onClick={toggleLanguage}
+                variant="outline" 
+                size="sm" 
+                className="border-blue-300 text-blue-600 hover:bg-blue-50 gap-2"
+              >
+                <Globe className="h-4 w-4" />
+                {isKannada ? "English" : "ಕನ್ನಡ"}
               </Button>
               <Button className="bg-blue-600 hover:bg-blue-700 text-white gap-2 shadow-md">
                 <User className="h-4 w-4" />
-                Login
+                {isKannada ? "ಲಾಗಿನ್" : "Login"}
               </Button>
             </div>
           </div>
@@ -114,7 +127,10 @@ const Index = () => {
           <div className="max-w-4xl mx-auto mb-12">
             <p className="text-gray-600 text-lg leading-relaxed flex items-center justify-center gap-2">
               <Truck className="h-5 w-5 text-blue-600" />
-              Connecting urban communities with smart waste management through technology, local workers, and accessible sanitation services in multiple languages.
+              {isKannada 
+                ? "ತಂತ್ರಜ್ಞಾನ, ಸ್ಥಳೀಯ ಕೆಲಸಗಾರರು ಮತ್ತು ಬಹು ಭಾಷೆಗಳಲ್ಲಿ ಪ್ರವೇಶಿಸಬಹುದಾದ ನೈರ್ಮಲ್ಯ ಸೇವೆಗಳ ಮೂಲಕ ನಗರ ಸಮುದಾಯಗಳನ್ನು ಸ್ಮಾರ್ಟ್ ತ್ಯಾಜ್ಯ ನಿರ್ವಹಣೆಯೊಂದಿಗೆ ಸಂಪರ್ಕಿಸುವುದು।"
+                : "Connecting urban communities with smart waste management through technology, local workers, and accessible sanitation services in multiple languages."
+              }
               <Award className="h-5 w-5 text-blue-600" />
             </p>
           </div>
@@ -128,13 +144,17 @@ const Index = () => {
                   <Truck className="h-8 w-8 text-blue-600" />
                   <span className="text-2xl">📝</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">Worker Hub</h3>
-                <p className="text-gray-600 mb-6 text-lg">Real-time collection tracking and route management</p>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isKannada ? "ಕೆಲಸಗಾರ ಹಬ್" : "Worker Hub"}
+                </h3>
+                <p className="text-gray-600 mb-6 text-lg">
+                  {isKannada ? "ನೈಜ ಸಮಯದ ಸಂಗ್ರಹಣೆ ಟ್ರ್ಯಾಕಿಂಗ್ ಮತ್ತು ಮಾರ್ಗ ನಿರ್ವಹಣೆ" : "Real-time collection tracking and route management"}
+                </p>
                 <Button 
                   onClick={() => setCurrentView("worker")}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 text-lg shadow-lg"
                 >
-                  Launch Worker App
+                  {isKannada ? "ಕೆಲಸಗಾರ ಆ್ಯಪ್ ಪ್ರಾರಂಭಿಸಿ" : "Launch Worker App"}
                 </Button>
               </CardContent>
             </Card>
@@ -146,13 +166,17 @@ const Index = () => {
                   <Users className="h-8 w-8 text-blue-600" />
                   <span className="text-2xl">💳</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">Citizen Portal</h3>
-                <p className="text-gray-600 mb-6 text-lg">Smart payments and service requests</p>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isKannada ? "ನಾಗರಿಕ ಪೋರ್ಟಲ್" : "Citizen Portal"}
+                </h3>
+                <p className="text-gray-600 mb-6 text-lg">
+                  {isKannada ? "ಸ್ಮಾರ್ಟ್ ಪಾವತಿಗಳು ಮತ್ತು ಸೇವಾ ವಿನಂತಿಗಳು" : "Smart payments and service requests"}
+                </p>
                 <Button 
                   onClick={() => setCurrentView("citizen")}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 text-lg shadow-lg"
                 >
-                  Open Portal
+                  {isKannada ? "ಪೋರ್ಟಲ್ ತೆರೆಯಿರಿ" : "Open Portal"}
                 </Button>
               </CardContent>
             </Card>
@@ -164,13 +188,17 @@ const Index = () => {
                   <Shield className="h-8 w-8 text-blue-600" />
                   <span className="text-2xl">🎯</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">Admin Dashboard</h3>
-                <p className="text-gray-600 mb-6 text-lg">Analytics and city management</p>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isKannada ? "ಆಡಳಿತ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್" : "Admin Dashboard"}
+                </h3>
+                <p className="text-gray-600 mb-6 text-lg">
+                  {isKannada ? "ವಿಶ್ಲೇಷಣೆ ಮತ್ತು ನಗರ ನಿರ್ವಹಣೆ" : "Analytics and city management"}
+                </p>
                 <Button 
                   onClick={() => setCurrentView("admin")}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 text-lg shadow-lg"
                 >
-                  Access Dashboard
+                  {isKannada ? "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ಪ್ರವೇಶ" : "Access Dashboard"}
                 </Button>
               </CardContent>
             </Card>
@@ -181,10 +209,13 @@ const Index = () => {
         <div className="text-center mb-16">
           <div className="bg-white rounded-3xl px-12 py-8 max-w-5xl mx-auto shadow-lg border border-gray-100">
             <h2 className="text-4xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-3">
-              🏠 Bringing Cleanliness to Every Neighborhood 🏠
+              🏠 {isKannada ? "ಪ್ರತಿ ನೆರೆಹೊರೆಗೆ ಶುಚಿತನವನ್ನು ತರುವುದು" : "Bringing Cleanliness to Every Neighborhood"} 🏠
             </h2>
             <p className="text-gray-600 text-xl leading-relaxed">
-              From the busy streets to quiet lanes, we serve every community with care and efficiency through smart technology and dedicated workers.
+              {isKannada 
+                ? "ಕಾರ್ಯನಿರತ ಬೀದಿಗಳಿಂದ ಶಾಂತ ಲೇನ್‌ಗಳವರೆಗೆ, ನಾವು ಸ್ಮಾರ್ಟ್ ತಂತ್ರಜ್ಞಾನ ಮತ್ತು ಸಮರ್ಪಿತ ಕೆಲಸಗಾರರ ಮೂಲಕ ಪ್ರತಿ ಸಮುದಾಯಕ್ಕೆ ಕಾಳಜಿ ಮತ್ತು ದಕ್ಷತೆಯೊಂದಿಗೆ ಸೇವೆ ಸಲ್ಲಿಸುತ್ತೇವೆ।"
+                : "From the busy streets to quiet lanes, we serve every community with care and efficiency through smart technology and dedicated workers."
+              }
             </p>
           </div>
         </div>
@@ -193,22 +224,22 @@ const Index = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 max-w-6xl mx-auto">
           <div className="text-center bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300 border border-gray-100">
             <div className="text-4xl font-bold text-blue-600 mb-2">98%</div>
-            <div className="text-gray-600">Collection Rate</div>
+            <div className="text-gray-600">{isKannada ? "ಸಂಗ್ರಹಣೆ ದರ" : "Collection Rate"}</div>
             <div className="text-2xl mt-2">✅</div>
           </div>
           <div className="text-center bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300 border border-gray-100">
             <div className="text-4xl font-bold text-blue-600 mb-2">2.5K</div>
-            <div className="text-gray-600">Happy Citizens</div>
+            <div className="text-gray-600">{isKannada ? "ಸಂತೋಷದ ನಾಗರಿಕರು" : "Happy Citizens"}</div>
             <div className="text-2xl mt-2">😊</div>
           </div>
           <div className="text-center bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300 border border-gray-100">
             <div className="text-4xl font-bold text-blue-600 mb-2">150+</div>
-            <div className="text-gray-600">Active Workers</div>
+            <div className="text-gray-600">{isKannada ? "ಸಕ್ರಿಯ ಕೆಲಸಗಾರರು" : "Active Workers"}</div>
             <div className="text-2xl mt-2">👷‍♂️</div>
           </div>
           <div className="text-center bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300 border border-gray-100">
             <div className="text-4xl font-bold text-blue-600 mb-2">45</div>
-            <div className="text-gray-600">City Wards</div>
+            <div className="text-gray-600">{isKannada ? "ನಗರ ವಾರ್ಡ್‌ಗಳು" : "City Wards"}</div>
             <div className="text-2xl mt-2">🏘️</div>
           </div>
         </div>
@@ -225,18 +256,26 @@ const Index = () => {
           
           <div className="bg-white rounded-full px-8 py-4 inline-block mb-8 shadow-md border border-gray-100">
             <p className="text-gray-700 font-semibold text-lg">
-              Built for Mangaluru MCC Hackathon 2024 🏆
+              {isKannada ? "ಮಂಗಳೂರು MCC ಹ್ಯಾಕಥಾನ್ 2024 ಗಾಗಿ ನಿರ್ಮಿಸಲಾಗಿದೆ 🏆" : "Built for Mangaluru MCC Hackathon 2024 🏆"}
             </p>
           </div>
           
           <div className="flex justify-center gap-8 mb-8">
-            <Button variant="ghost" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 text-lg px-8 py-3 rounded-full">
+            <Button 
+              variant="ghost" 
+              className={`text-lg px-8 py-3 rounded-full font-semibold ${!isKannada ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'}`}
+              onClick={() => setIsKannada(false)}
+            >
               English
             </Button>
             <div className="flex items-center">
               <span className="text-gray-300 text-3xl">|</span>
             </div>
-            <Button variant="ghost" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 text-lg px-8 py-3 rounded-full">
+            <Button 
+              variant="ghost" 
+              className={`text-lg px-8 py-3 rounded-full font-semibold ${isKannada ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'}`}
+              onClick={() => setIsKannada(true)}
+            >
               ಕನ್ನಡ
             </Button>
           </div>
