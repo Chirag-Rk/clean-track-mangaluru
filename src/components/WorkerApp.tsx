@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { 
   MapPin, 
   Clock, 
@@ -49,6 +51,9 @@ const WorkerApp = ({ onBack }: WorkerAppProps) => {
   const [lastLogged] = useState("2:30 PM");
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [emergencyDialogOpen, setEmergencyDialogOpen] = useState(false);
+  const [messagesDialogOpen, setMessagesDialogOpen] = useState(false);
+  const [helpDialogOpen, setHelpDialogOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -78,31 +83,52 @@ const WorkerApp = ({ onBack }: WorkerAppProps) => {
     }, 2000);
   };
 
-  const handleEmergencyReport = () => {
+  const handleRouteGuide = () => {
     toast({
-      title: isKannada ? "ತುರ್ತು ವರದಿ" : "Emergency Report",
-      description: isKannada ? "ತುರ್ತು ಸೇವೆಗಳಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತಿದೆ" : "Connecting to emergency services",
+      title: isKannada ? "ಮಾರ್ಗ ಗೈಡ್" : "Route Guide",
+      description: isKannada ? "ಮುಂದಿನ ಸ್ಥಳಕ್ಕೆ ಮಾರ್ಗದರ್ಶನ ಪ್ರಾರಂಭವಾಗಿದೆ" : "Starting navigation to next location",
     });
+    // Simulate opening route guide
+    setTimeout(() => {
+      setActiveTab("map");
+    }, 1500);
   };
 
-  const handleRouteOptimization = () => {
-    toast({
-      title: isKannada ? "ಮಾರ್ಗ ಆಪ್ಟಿಮೈಸೇಶನ್" : "Route Optimization",
-      description: isKannada ? "ಅತ್ಯುತ್ತಮ ಮಾರ್ಗವನ್ನು ಲೆಕ್ಕಾಚಾರ ಮಾಡುತ್ತಿದೆ" : "Calculating optimal route",
-    });
+  const handleEmergency = () => {
+    setEmergencyDialogOpen(true);
   };
+
+  const handleContactHelp = () => {
+    setHelpDialogOpen(true);
+  };
+
+  const handleMessages = () => {
+    setMessagesDialogOpen(true);
+  };
+
+  const handleEmergencyCall = (type: string) => {
+    toast({
+      title: isKannada ? "ತುರ್ತು ಕಾಲ್" : "Emergency Call",
+      description: isKannada ? `${type} ಗೆ ಸಂಪರ್ಕಿಸುತ್ತಿದೆ...` : `Connecting to ${type}...`,
+    });
+    setEmergencyDialogOpen(false);
+    // Simulate emergency call
+    setTimeout(() => {
+      window.open(`tel:${type === 'Police' ? '100' : type === 'Medical' ? '108' : '101'}`, "_self");
+    }, 1000);
+  };
+
+  const quickActions = [
+    { icon: Navigation, label: isKannada ? "ಮಾರ್ಗ ಗೈಡ್" : "Route Guide", action: handleRouteGuide },
+    { icon: AlertCircle, label: isKannada ? "ತುರ್ತು" : "Emergency", action: handleEmergency },
+    { icon: Phone, label: isKannada ? "ಸಂಪರ್ಕ ಸಹಾಯ" : "Contact Help", action: handleContactHelp },
+    { icon: MessageSquare, label: isKannada ? "ಸಂದೇಶಗಳು" : "Messages", action: handleMessages },
+  ];
 
   const achievements = [
     { icon: "🏆", label: isKannada ? "ದಿನದ ಚಾಂಪಿಯನ್" : "Daily Champion", earned: true },
     { icon: "⚡", label: isKannada ? "ವೇಗದ ಸಂಗ್ರಾಹಕ" : "Speed Collector", earned: true },
     { icon: "🎯", label: isKannada ? "ಗುರಿ ಸಾಧಕ" : "Target Achiever", earned: false },
-  ];
-
-  const quickActions = [
-    { icon: Navigation, label: isKannada ? "ಮಾರ್ಗ ಗೈಡ್" : "Route Guide", action: handleRouteOptimization },
-    { icon: AlertCircle, label: isKannada ? "ತುರ್ತು ವರದಿ" : "Emergency", action: handleEmergencyReport },
-    { icon: Phone, label: isKannada ? "ಸಂಪರ್ಕ ಸಹಾಯ" : "Contact Help", action: () => toast({ title: "Help", description: "Connecting to support..." }) },
-    { icon: MessageSquare, label: isKannada ? "ಸಂದೇಶ" : "Messages", action: () => toast({ title: "Messages", description: "Opening messages..." }) },
   ];
 
   const renderDashboard = () => (
@@ -351,6 +377,141 @@ const WorkerApp = ({ onBack }: WorkerAppProps) => {
           </Button>
         </div>
       </div>
+
+      {/* Emergency Dialog */}
+      <Dialog open={emergencyDialogOpen} onOpenChange={setEmergencyDialogOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-red-600">
+              <AlertCircle className="h-5 w-5" />
+              {isKannada ? "ತುರ್ತು ಸೇವೆಗಳು" : "Emergency Services"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Button 
+              onClick={() => handleEmergencyCall('Police')}
+              className="w-full bg-red-600 hover:bg-red-700 text-white"
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              {isKannada ? "ಪೊಲೀಸ್ - 100" : "Police - 100"}
+            </Button>
+            <Button 
+              onClick={() => handleEmergencyCall('Medical')}
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              {isKannada ? "ವೈದ್ಯಕೀಯ - 108" : "Medical - 108"}
+            </Button>
+            <Button 
+              onClick={() => handleEmergencyCall('Fire')}
+              className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              {isKannada ? "ಅಗ್ನಿಶಾಮಕ - 101" : "Fire - 101"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Messages Dialog */}
+      <Dialog open={messagesDialogOpen} onOpenChange={setMessagesDialogOpen}>
+        <DialogContent className="max-w-md max-h-96">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5" />
+              {isKannada ? "ಸಂದೇಶಗಳು" : "Messages"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 max-h-64 overflow-y-auto">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <div className="font-medium text-blue-800">
+                {isKannada ? "ನಿರ್ವಾಹಕರಿಂದ" : "From Supervisor"}
+              </div>
+              <p className="text-sm text-blue-700 mt-1">
+                {isKannada ? "ಇಂದು ಉತ್ತಮ ಕೆಲಸ! ಗುರಿ ತಲುಪುವ ಹಾದಿಯಲ್ಲಿದ್ದೀರಿ" : "Great work today! You're on track to meet your target"}
+              </p>
+              <div className="text-xs text-blue-600 mt-2">10:30 AM</div>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg">
+              <div className="font-medium text-green-800">
+                {isKannada ? "ವ್ಯವಸ್ಥೆಯ ಅಧಿಸೂಚನೆ" : "System Notification"}
+              </div>
+              <p className="text-sm text-green-700 mt-1">
+                {isKannada ? "ಬೋನಸ್ ಅರ್ಹತೆ ಪೂರೈಸಲಾಗಿದೆ" : "Bonus eligibility achieved"}
+              </p>
+              <div className="text-xs text-green-600 mt-2">9:15 AM</div>
+            </div>
+            <div className="bg-yellow-50 p-3 rounded-lg">
+              <div className="font-medium text-yellow-800">
+                {isKannada ? "ಮಾರ್ಗ ನವೀಕರಣ" : "Route Update"}
+              </div>
+              <p className="text-sm text-yellow-700 mt-1">
+                {isKannada ? "ಸೆಕ್ಟರ್ B ನಲ್ಲಿ ಹೊಸ ಮಾರ್ಗ ಲಭ್ಯ" : "New route available in Sector B"}
+              </p>
+              <div className="text-xs text-yellow-600 mt-2">8:45 AM</div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Help Dialog */}
+      <Dialog open={helpDialogOpen} onOpenChange={setHelpDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Phone className="h-5 w-5" />
+              {isKannada ? "ಸಂಪರ್ಕ ಸಹಾಯ" : "Contact Help"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Button 
+              onClick={() => {
+                toast({
+                  title: isKannada ? "ಸೂಪರ್‌ವೈಸರ್ ಕಾಲ್" : "Supervisor Call",
+                  description: isKannada ? "ಸೂಪರ್‌ವೈಸರ್‌ಗೆ ಸಂಪರ್ಕಿಸುತ್ತಿದೆ..." : "Connecting to supervisor...",
+                });
+                setHelpDialogOpen(false);
+                setTimeout(() => window.open("tel:+919876543210", "_self"), 1000);
+              }}
+              className="w-full justify-start"
+              variant="outline"
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              {isKannada ? "ಸೂಪರ್‌ವೈಸರ್" : "Call Supervisor"}
+            </Button>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: isKannada ? "ತಾಂತ್ರಿಕ ಸಹಾಯ" : "Technical Support",
+                  description: isKannada ? "ತಾಂತ್ರಿಕ ತಂಡಕ್ಕೆ ಸಂಪರ್ಕಿಸುತ್ತಿದೆ..." : "Connecting to tech support...",
+                });
+                setHelpDialogOpen(false);
+                setTimeout(() => window.open("tel:+918001234567", "_self"), 1000);
+              }}
+              className="w-full justify-start"
+              variant="outline"
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              {isKannada ? "ತಾಂತ್ರಿಕ ಸಹಾಯ" : "Tech Support"}
+            </Button>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: isKannada ? "ಆಡಳಿತ ಕಚೇರಿ" : "Admin Office",
+                  description: isKannada ? "ಆಡಳಿತ ಕಚೇರಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತಿದೆ..." : "Connecting to admin office...",
+                });
+                setHelpDialogOpen(false);
+                setTimeout(() => window.open("tel:+918001112222", "_self"), 1000);
+              }}
+              className="w-full justify-start"
+              variant="outline"
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              {isKannada ? "ಆಡಳಿತ ಕಚೇರಿ" : "Admin Office"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Offline Warning */}
       {!isOnline && (
