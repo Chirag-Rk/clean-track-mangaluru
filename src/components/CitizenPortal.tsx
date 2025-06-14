@@ -1,12 +1,14 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Phone, AlertCircle, Trophy, Home as HomeIcon, MapPin, Upload, CreditCard, Calendar, Star, Wallet, CheckCircle, Clock, FileText, Camera, Gift, Download, Bell, Settings } from "lucide-react";
+import { ArrowLeft, Phone, AlertCircle, Trophy, Home as HomeIcon, MapPin, Upload, CreditCard, Calendar, Star, Wallet, CheckCircle, Clock, FileText, Camera, Gift, Download, Bell, Settings, Receipt, TreePine, Users, Award, Target } from "lucide-react";
 import PaymentModal from "@/components/PaymentModal";
+import BillGeneration from "@/components/BillGeneration";
+import ContributionTracker from "@/components/ContributionTracker";
+import EnhancedComplaintSystem from "@/components/EnhancedComplaintSystem";
 import { useToast } from "@/hooks/use-toast";
 
 interface CitizenPortalProps {
@@ -15,7 +17,7 @@ interface CitizenPortalProps {
 
 const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
   const [isKannada, setIsKannada] = useState(false);
-  const [currentPage, setCurrentPage] = useState<"home" | "status" | "report" | "rewards" | "payments">("home");
+  const [currentPage, setCurrentPage] = useState<"home" | "status" | "report" | "rewards" | "payments" | "bills" | "contributions">("home");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [reportDescription, setReportDescription] = useState("");
   const [selectedReward, setSelectedReward] = useState<string | null>(null);
@@ -28,23 +30,6 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
       title: isKannada ? "ವಿಶೇಷ ಪಿಕಪ್ ವಿನಂತಿ" : "Special Pickup Request",
       description: isKannada ? "ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಸಲ್ಲಿಸಲಾಗಿದೆ. ನಾವು ಶೀಘ್ರದಲ್ಲೇ ಸಂಪರ್ಕಿಸುತ್ತೇವೆ." : "Your request has been submitted. We'll contact you soon.",
     });
-  };
-
-  const handleReportSubmit = () => {
-    if (!reportDescription.trim()) {
-      toast({
-        title: isKannada ? "ದೋಷ" : "Error",
-        description: isKannada ? "ದಯವಿಟ್ಟು ಸಮಸ್ಯೆಯ ವಿವರಣೆಯನ್ನು ನೀಡಿ" : "Please provide a description of the issue",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    toast({
-      title: isKannada ? "ವರದಿ ಸಲ್ಲಿಸಲಾಗಿದೆ" : "Report Submitted",
-      description: isKannada ? "ನಿಮ್ಮ ವರದಿಯನ್ನು ಸಲ್ಲಿಸಲಾಗಿದೆ. ಟಿಕೆಟ್ #12345" : "Your report has been submitted. Ticket #12345",
-    });
-    setReportDescription("");
   };
 
   const handleClaimReward = (rewardTitle: string, points: number) => {
@@ -65,7 +50,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
   };
 
   const renderNavbar = () => (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-20 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 z-20 shadow-lg">
       <div className="flex justify-around">
         <Button
           variant="ghost"
@@ -73,7 +58,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           onClick={() => setCurrentPage("home")}
           className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "home" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
         >
-          <HomeIcon className="h-5 w-5" />
+          <HomeIcon className="h-4 w-4" />
           <span className="text-xs font-medium">{isKannada ? "ಮನೆ" : "Home"}</span>
         </Button>
         
@@ -83,8 +68,18 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           onClick={() => setCurrentPage("payments")}
           className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "payments" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
         >
-          <CreditCard className="h-5 w-5" />
-          <span className="text-xs font-medium">{isKannada ? "ಪಾವತಿ" : "Payments"}</span>
+          <CreditCard className="h-4 w-4" />
+          <span className="text-xs font-medium">{isKannada ? "ಪಾವತಿ" : "Pay"}</span>
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentPage("bills")}
+          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "bills" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+        >
+          <Receipt className="h-4 w-4" />
+          <span className="text-xs font-medium">{isKannada ? "ಬಿಲ್‌ಗಳು" : "Bills"}</span>
         </Button>
         
         <Button
@@ -93,7 +88,7 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           onClick={() => setCurrentPage("status")}
           className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "status" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
         >
-          <MapPin className="h-5 w-5" />
+          <MapPin className="h-4 w-4" />
           <span className="text-xs font-medium">{isKannada ? "ಸ್ಥಿತಿ" : "Status"}</span>
         </Button>
         
@@ -103,8 +98,18 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           onClick={() => setCurrentPage("report")}
           className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "report" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
         >
-          <AlertCircle className="h-5 w-5" />
-          <span className="text-xs font-medium">{isKannada ? "ವರದಿ" : "Report"}</span>
+          <AlertCircle className="h-4 w-4" />
+          <span className="text-xs font-medium">{isKannada ? "ದೂರು" : "Report"}</span>
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentPage("contributions")}
+          className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "contributions" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
+        >
+          <TreePine className="h-4 w-4" />
+          <span className="text-xs font-medium">{isKannada ? "ಪ್ರಭಾವ" : "Impact"}</span>
         </Button>
         
         <Button
@@ -113,24 +118,24 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           onClick={() => setCurrentPage("rewards")}
           className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentPage === "rewards" ? "text-blue-600 bg-blue-50" : "text-gray-600"}`}
         >
-          <Trophy className="h-5 w-5" />
-          <span className="text-xs font-medium">{isKannada ? "ಬಹುಮಾನಗಳು" : "Rewards"}</span>
+          <Trophy className="h-4 w-4" />
+          <span className="text-xs font-medium">{isKannada ? "ಬಹುಮಾನ" : "Rewards"}</span>
         </Button>
       </div>
     </div>
   );
 
   const renderHome = () => (
-    <>
+    <div className="pb-20">
       {/* Hero Section */}
       <div className="text-center mb-8">
-        <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
           <div className="text-4xl">🏠</div>
         </div>
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           {isKannada ? "ಸ್ವಾಗತ!" : "Welcome!"}
         </h1>
-        <div className="bg-green-100 rounded-full px-6 py-3 inline-flex items-center gap-3 mb-6">
+        <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-full px-6 py-3 inline-flex items-center gap-3 mb-6 shadow-md">
           <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
           <span className="text-green-700 font-semibold">
             {isKannada ? "ಇಂದು ಸಂಗ್ರಹಣೆ ಪೂರ್ಣಗೊಂಡಿದೆ" : "Today's Collection Completed"}
@@ -138,25 +143,53 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
         </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Quick Stats Dashboard */}
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-lg transition-all duration-300">
+          <CardContent className="p-4 text-center">
+            <TreePine className="h-6 w-6 text-green-600 mx-auto mb-2" />
+            <div className="text-lg font-bold text-green-700">2.3</div>
+            <div className="text-xs text-gray-600">{isKannada ? "ಮರಗಳು ಉಳಿಸಿದೆ" : "Trees Saved"}</div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-blue-50 to-sky-50 border-blue-200 hover:shadow-lg transition-all duration-300">
+          <CardContent className="p-4 text-center">
+            <Award className="h-6 w-6 text-blue-600 mx-auto mb-2" />
+            <div className="text-lg font-bold text-blue-700">450</div>
+            <div className="text-xs text-gray-600">{isKannada ? "ಪಾಯಿಂಟ್‌ಗಳು" : "Points"}</div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200 hover:shadow-lg transition-all duration-300">
+          <CardContent className="p-4 text-center">
+            <Target className="h-6 w-6 text-purple-600 mx-auto mb-2" />
+            <div className="text-lg font-bold text-purple-700">#12</div>
+            <div className="text-xs text-gray-600">{isKannada ? "ಕಮ್ಯುನಿಟಿ ರ್ಯಾಂಕ್" : "Community Rank"}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Enhanced Quick Actions */}
       <div className="grid gap-4 mb-8">
-        <Card className="border border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+        <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-green-50 to-emerald-50">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <CreditCard className="h-6 w-6 text-green-600" />
+              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center shadow-md">
+                <CreditCard className="h-7 w-7 text-green-600" />
               </div>
               <div className="flex-1">
                 <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {isKannada ? "ಮಾಸಿಕ ಬಿಲ್ ಪಾವತಿ" : "Monthly Bill Payment"}
+                  {isKannada ? "ತ್ವರಿತ ಪಾವತಿ" : "Quick Payment"}
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  {isKannada ? "ತ್ಯಾಜ್ಯ ಸಂಗ್ರಹಣೆ ಶುಲ್ಕ ಪಾವತಿಸಿ" : "Pay your waste collection fee"}
+                  {isKannada ? "ಬಿಲ್ ಪಾವತಿ ಮತ್ತು ಇತಿಹಾಸ" : "Bill payment & history"}
                 </p>
+                <Badge className="bg-orange-100 text-orange-700 text-xs mt-1">₹150 {isKannada ? "ಬಾಕಿ" : "Due"}</Badge>
               </div>
               <Button
                 onClick={() => setShowPaymentModal(true)}
-                className="bg-green-500 hover:bg-green-600 text-white"
+                className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg"
               >
                 {isKannada ? "ಪಾವತಿಸಿ" : "Pay Now"}
               </Button>
@@ -164,76 +197,100 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+        <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-blue-50 to-sky-50">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Phone className="h-6 w-6 text-blue-600" />
+              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center shadow-md">
+                <Phone className="h-7 w-7 text-blue-600" />
               </div>
               <div className="flex-1">
                 <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {isKannada ? "ವಿಶೇಷ ಪಿಕಪ್" : "Special Pickup"}
+                  {isKannada ? "ವಿಶೇಷ ಸೇವೆಗಳು" : "Special Services"}
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  {isKannada ? "ಅತಿರಿಕ್ತ ತ್ಯಾಜ್ಯ ಸಂಗ್ರಹಿಸಲು ವಿನಂತಿಸಿ" : "Request extra waste collection"}
+                  {isKannada ? "ಹೆಚ್ಚುವರಿ ಪಿಕಪ್ & ವಿಶೇಷ ಸೇವೆ" : "Extra pickup & special service"}
                 </p>
               </div>
-              <Button onClick={handleSpecialPickup} className="bg-blue-500 hover:bg-blue-600 text-white">
+              <Button onClick={handleSpecialPickup} className="bg-gradient-to-r from-blue-500 to-sky-600 hover:from-blue-600 hover:to-sky-700 text-white shadow-lg">
                 {isKannada ? "ವಿನಂತಿಸಿ" : "Request"}
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+        <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-red-50 to-pink-50">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <AlertCircle className="h-6 w-6 text-red-600" />
+              <div className="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center shadow-md">
+                <AlertCircle className="h-7 w-7 text-red-600" />
               </div>
               <div className="flex-1">
                 <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {isKannada ? "ಸಮಸ್ಯೆ ವರದಿ" : "Report Issue"}
+                  {isKannada ? "ದೂರು ವ್ಯವಸ್ಥೆ" : "Complaint System"}
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  {isKannada ? "ಫೋಟೋ ಸಹಿತ ದೂರು ನೀಡಿ" : "Report with photo evidence"}
+                  {isKannada ? "ಸಮಸ್ಯೆಗಳನ್ನು ವರದಿ ಮಾಡಿ & ಟ್ರ್ಯಾಕ್ ಮಾಡಿ" : "Report & track issues"}
                 </p>
               </div>
               <Button 
                 onClick={() => setCurrentPage("report")} 
-                className="bg-red-500 hover:bg-red-600 text-white"
+                className="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white shadow-lg"
               >
-                {isKannada ? "ವರದಿ" : "Report"}
+                {isKannada ? "ದೂರು" : "Report"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-r from-purple-50 to-indigo-50">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center shadow-md">
+                <TreePine className="h-7 w-7 text-purple-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  {isKannada ? "ಪರಿಸರ ಪ್ರಭಾವ" : "Environmental Impact"}
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  {isKannada ? "ನಿಮ್ಮ ಕೊಡುಗೆ ಮತ್ತು ಸಾಧನೆಗಳು" : "Your contributions & achievements"}
+                </p>
+              </div>
+              <Button 
+                onClick={() => setCurrentPage("contributions")} 
+                className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white shadow-lg"
+              >
+                {isKannada ? "ವೀಕ್ಷಿಸಿ" : "View"}
               </Button>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Quick Stats */}
-      <Card className="border border-gray-200 mb-8">
+      {/* Today's Summary */}
+      <Card className="border border-gray-200 mb-8 bg-gradient-to-r from-gray-50 to-slate-50">
         <CardHeader>
           <CardTitle className="text-gray-800 flex items-center gap-2">
             <FileText className="h-5 w-5" />
-            {isKannada ? "ಇಂದಿನ ಅಂಕಿಅಂಶಗಳು" : "Today's Overview"}
+            {isKannada ? "ಇಂದಿನ ಸಾರಾಂಶ" : "Today's Summary"}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-6">
-            <div className="text-center p-4 bg-green-50 rounded-lg">
+            <div className="text-center p-4 bg-white rounded-xl shadow-sm border border-green-100">
               <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-2" />
-              <div className="text-lg font-bold text-gray-800">Collected</div>
+              <div className="text-lg font-bold text-gray-800">{isKannada ? "ಸಂಗ್ರಹಿಸಲಾಗಿದೆ" : "Collected"}</div>
               <div className="text-gray-600 text-sm">8:30 AM</div>
             </div>
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
+            <div className="text-center p-4 bg-white rounded-xl shadow-sm border border-blue-100">
               <Wallet className="h-8 w-8 text-blue-500 mx-auto mb-2" />
               <div className="text-lg font-bold text-gray-800">₹150</div>
-              <div className="text-gray-600 text-sm">Due: 5 days</div>
+              <div className="text-gray-600 text-sm">{isKannada ? "ಬಾಕಿ: 5 ದಿನಗಳು" : "Due: 5 days"}</div>
             </div>
           </div>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 
   const renderPayments = () => (
@@ -444,79 +501,8 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
     </div>
   );
 
-  const renderReport = () => (
-    <div className="mb-20">
-      <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <AlertCircle className="h-8 w-8 text-red-600" />
-        </div>
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">
-          {isKannada ? "ಸಮಸ್ಯೆ ವರದಿ" : "Report Issues"}
-        </h2>
-      </div>
-
-      <Card className="border border-gray-200 mb-6">
-        <CardHeader>
-          <CardTitle className="text-gray-800">{isKannada ? "ಹೊಸ ವರದಿ ಸಲ್ಲಿಸಿ" : "Submit New Report"}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {isKannada ? "ಸಮಸ್ಯೆಯ ವಿವರಣೆ" : "Issue Description"}
-            </label>
-            <Textarea
-              placeholder={isKannada ? "ಸಮಸ್ಯೆಯನ್ನು ವಿವರಿಸಿ..." : "Describe the issue..."}
-              value={reportDescription}
-              onChange={(e) => setReportDescription(e.target.value)}
-              className="min-h-[100px]"
-            />
-          </div>
-          
-          <Button className="w-full bg-blue-500 hover:bg-blue-600 mb-4">
-            <Camera className="h-4 w-4 mr-2" />
-            {isKannada ? "ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ" : "Upload Photo"}
-          </Button>
-          
-          <Button 
-            onClick={handleReportSubmit}
-            className="w-full bg-red-500 hover:bg-red-600"
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            {isKannada ? "ವರದಿ ಸಲ್ಲಿಸಿ" : "Submit Report"}
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Recent Reports */}
-      <Card className="border border-gray-200">
-        <CardHeader>
-          <CardTitle className="text-gray-800">{isKannada ? "ಇತ್ತೀಚಿನ ವರದಿಗಳು" : "Recent Reports"}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {[
-              { id: "#12344", issue: "Missed collection", date: "Nov 12", status: "resolved" },
-              { id: "#12343", issue: "Damaged bin", date: "Nov 10", status: "in_progress" },
-              { id: "#12342", issue: "Late collection", date: "Nov 8", status: "resolved" },
-            ].map((report, index) => (
-              <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
-                <div>
-                  <div className="text-gray-800 font-medium">{report.id}</div>
-                  <div className="text-gray-600 text-sm">{report.issue} - {report.date}</div>
-                </div>
-                <Badge className={report.status === "resolved" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}>
-                  {report.status === "resolved" ? (isKannada ? "ಪರಿಹರಿಸಲಾಗಿದೆ" : "Resolved") : (isKannada ? "ಪ್ರಗತಿಯಲ್ಲಿದೆ" : "In Progress")}
-                </Badge>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <div className="p-4 pb-24">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -543,9 +529,11 @@ const CitizenPortal = ({ onBack }: CitizenPortalProps) => {
         {/* Content based on current page */}
         {currentPage === "home" && renderHome()}
         {currentPage === "payments" && renderPayments()}
+        {currentPage === "bills" && <BillGeneration isKannada={isKannada} />}
+        {currentPage === "contributions" && <ContributionTracker isKannada={isKannada} />}
         {currentPage === "rewards" && renderRewards()}
         {currentPage === "status" && renderStatus()}
-        {currentPage === "report" && renderReport()}
+        {currentPage === "report" && <EnhancedComplaintSystem isKannada={isKannada} />}
 
         {/* Language info */}
         <div className="text-center text-gray-500 text-sm mb-4">
