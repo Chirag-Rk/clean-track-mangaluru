@@ -6,7 +6,7 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter basename="/clean-track-mangaluru/"> {/* ✅ GitHub Pages base route */}
+    <BrowserRouter basename="/clean-track-mangaluru/">
       <App />
     </BrowserRouter>
   </React.StrictMode>
