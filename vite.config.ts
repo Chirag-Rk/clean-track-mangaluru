@@ -1,27 +1,21 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins: [
-    react(),
-    mode === 'development' && componentTagger(),
-  ].filter(Boolean),
-  build: {
-    rollupOptions: {
-      input: path.resolve(__dirname, 'index.html'), // Ensures custom HTML is used
-    },
-  },
+// ✅ Final Vite config for GitHub Pages deployment
+export default defineConfig({
+  base: "/clean-track-mangaluru/", // ✅ Required for GitHub Pages to load correctly
+
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "./src"), // ✅ Simplified imports using "@"
     },
   },
-}));
 
+  build: {
+    sourcemap: true, // ✅ Helps debug errors in production
+    outDir: "dist", // Optional: default is "dist"
+  },
+
+  plugins: [react()],
+});
